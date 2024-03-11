@@ -22,11 +22,11 @@ public class AutoBroadcast : TerrariaPlugin
 
     public override string Name => "自动广播";
 
-    public override string Author => "Zaicon,GK 小改良 ";
+    public override string Author => "Zaicon,GK 小改良，肝帝熙恩更新至1449";
 
     public override string Description => "每隔N秒自动广播一条消息或命令";
 
-    public override Version Version => new Version(1, 0, 0, 1);
+    public override Version Version => new Version(1, 0, 2);
 
     public string ConfigPath => Path.Combine(TShock.SavePath, "AutoBroadcastConfig.json");
 
@@ -90,6 +90,10 @@ public class AutoBroadcast : TerrariaPlugin
     public void OnChat(ServerChatEventArgs args)
     {
         DateTime now = DateTime.Now;
+        if (TShock.Players[args.Who] == null || TShock.Players[args.Who].Group == null)
+        {
+            return; // 如果玩家对象或玩家组为null，则直接返回，避免空引用异常
+        }
         string name = TShock.Players[args.Who].Group.Name;
         lock (Config.Broadcasts)
         {
